@@ -7,10 +7,11 @@ import './App.css'
 const socket = io('http://localhost:8080')
 
 type socketEventType = 'bid' | 'play_card'
-type turnPhaseType = undefined | 'waiting' | 'bidding' | 'playing'
+type turnPhaseType = undefined | 'waiting' | 'bidding' | 'playing' | 'ending'
 
 // eslint-disable-next-line
 const player_id = 1
+const room = 'room_1'
 
 const directionDatas = ['North', 'East', 'South', 'West']
 const bidSuiteDatas = ['Club', 'Diamond', 'Heart', 'Space', 'No Trump']
@@ -49,6 +50,9 @@ function App() {
         setNext(payload?.nextDirection)
         /// display others contract here ...
         break
+      case 'ending':
+        setTurnPhase('ending')
+        break
       default:
         setNext(payload?.nextDirection)
         break
@@ -67,8 +71,12 @@ function App() {
   const emit = useCallback(
     ({ event, payload }: { event: socketEventType; payload: any }) => {
       if (direction === next) {
-        // eslint-disable-next-line
-        socket.emit(event, { player_id, ...payload })
+        socket.emit(event, {
+          room,
+          // eslint-disable-next-line
+          player_id,
+          ...payload,
+        })
       }
     },
     [direction, next]
@@ -80,7 +88,6 @@ function App() {
       payload: {
         contract,
         direction,
-        room: 'room_1',
       },
     })
   }
@@ -92,7 +99,6 @@ function App() {
         card,
         turn,
         direction,
-        room: 'room_1',
       },
     })
   }
@@ -163,6 +169,7 @@ function App() {
         ['bidding', 'playing'].includes(turnPhase) && (
           <div>next: {next === direction ? 'you' : directionDatas[next]}</div>
         )}
+      {turnPhase === 'ending' && <div>Ending ...</div>}
     </div>
   )
 }
