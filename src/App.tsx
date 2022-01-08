@@ -141,7 +141,11 @@ function App() {
           ))}
           {/* eslint-disable-next-line */}
           <span onClick={() => bid(-1)} role="application">
-            pass
+            pass{' '}
+          </span>
+          {/* eslint-disable-next-line */}
+          <span onClick={() => bid(99)} role="application">
+            double
           </span>
         </div>
       )}
