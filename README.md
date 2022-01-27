@@ -2,4 +2,4 @@
 
 ## yarn start
 
-test CEPD-10
+test CEPD-10 2
