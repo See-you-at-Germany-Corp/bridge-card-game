@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import io from 'socket.io-client'
 import range from 'lodash/range'
 import chunk from 'lodash/chunk'
@@ -102,6 +102,10 @@ function App() {
       },
     })
   }
+
+  useEffect(() => {
+    document.title = directionDatas[direction]
+  }, [direction])
 
   return (
     <div className="App">
